@@ -1,0 +1,99 @@
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));grid-gap: 20px;margin: 0 auto;width: 85vw;">
+{% for item in module.field_group %}
+  <div class="container-four" style="position: relative !important; margin: 0 auto !important; display: flex; justify-content: center;">
+	{% set href = item.link_field.url.href %}
+	{% if item.link_field.url.type is equalto "EMAIL_ADDRESS" %}
+		{% set href = "mailto:" + href %}
+	{% endif %}
+	<a class="link__hover" href="{{ href }}"
+		{% if item.link_field.open_in_new_tab %}target="_blank"{% endif %}
+		{% if item.link_field.rel %}rel="{{ item.link_field.rel }}"{% endif %}
+		>  
+	{% if item.image_field.src %}
+		{% set sizeAttrs = 'width="{{ item.image_field.width }}" height="{{ item.image_field.height }}"' %}
+		{% if item.image_field.size_type == 'auto' %}
+			{% set sizeAttrs = 'width="{{ item.image_field.width }}" height="{{ item.image_field.height }}" style="max-width: 100%; height: auto;"' %}
+		{% elif item.image_field.size_type == 'auto_custom_max' %}
+			{% set sizeAttrs = 'width="{{ item.image_field.max_width }}" height="{{ item.image_field.max_height }}" style="max-width: 100%; height: auto;"' %}
+		{% endif %}
+		 {% set loadingAttr = item.image_field.loading != 'disabled' ? 'loading="{{ item.image_field.loading }}"' : '' %}
+		<img src="{{ item.image_field.src }}" alt="{{ item.image_field.alt }}" {{ loadingAttr }} {{ sizeAttrs }}>
+	{% endif %}
+    <div class="card-text-four" style=" position: absolute !important;bottom: 20px !important;left: 50px;">
+	    {% inline_rich_text field="front_of_card" value="{{ item.front_of_card }}" %}
+    </div>
+    <div class="backside-four" style=" position: absolute !important;bottom: 20px !important;left: 50px;padding: 0 15% 0 0 !important;">
+	    {% inline_rich_text field="back_of_card" value="{{ item.back_of_card }}" %}    
+    </div>
+   </a>
+ </div>
+{% endfor %}
+</div>
+
+
+
+<style>
+  .container-four {
+    opacity: .9;
+    width: 350px;
+    transition: background-color 2s ease-out;
+  }
+  
+  .container-four:hover {
+/*         background-color: #1F355E !important; */
+    border-radius: 5px;
+    background-color: #0a0;
+    
+  }
+  
+  .container-four:hover img{
+/*     transition: .5s ease !important; */
+/*     transform: scale(1.02); */
+/*     opacity: 0; */
+  }
+
+  
+  .container-four,
+  .card-text-four {
+    position: relative;
+    text-shadow: #000 5px 0 10px;
+    display: block !important:
+  }
+  
+  .container-four:hover .card-text-four {
+    display: none !important;
+    position: relative;
+  }
+  
+  .container-four
+  .backside-four {
+    opacity: 0;
+  }
+  
+  .container-four:hover
+  .backside-four {
+    opacity: 1;
+    transition: .5s ease !important;
+        background-color: #1F355E !important;
+  }
+
+  .container-four img {
+border-radius: 5px;
+  }
+   @media(max-width: 767px) {
+    .card-text-four {
+      left: 30vw !important;
+      max-width: 110px !important;
+    }
+  }
+  
+  .link__hover:hover {
+    color: #fff !important;
+  }
+</style>
+
+
+
+
+
+
